@@ -1,0 +1,2 @@
+RewriteEngine on
+RewriteRule ^short/(.*)$ redirect.php?url=$1
