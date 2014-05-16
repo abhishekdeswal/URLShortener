@@ -21,13 +21,20 @@ function convert_url($id)
 function insertInTable($original_url)
 {
 	mysql_connect('localhost','root','');
-	mysql_select_db('url_short');
+	if(	!mysql_select_db('url_short')) {
+		$sql = "CREATE Database url_short";
+		mysql_query($sql);
+		mysql_select_db('url_short');
+		$sql = 'CREATE TABLE url_map ( '.' id INT NOT NULL AUTO_INCREMENT, '.
+			'original VARCHAR(100) NOT NULL, '.');';
+		mysql_query($sql);
+	} else { mysql_select_db('url_short'); }
 	$query = "INSERT INTO  `url_short`.`url_map` (`id` ,`original`)VALUES (NULL ,  '".$original_url."');";
 	mysql_query($query);
 	$query = "SELECT id FROM url_map WHERE original='".$original_url."';";
 	//$query = "SELECT COUNT(*) FROM url_map";
 	$id = mysql_fetch_assoc(mysql_query($query))['id'];
-	echo 'The shortened URL is : localhost/short/'.convert_url($id);
+	echo 'The shortened URL is : localhost/s'.convert_url($id);
 }
 
 if(isset($_POST['original_url'])) {
